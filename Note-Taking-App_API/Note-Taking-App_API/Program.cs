@@ -1,11 +1,22 @@
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Note_Taking_App_API.Data;
+using Note_Taking_App_API.Dtos;
+using Note_Taking_App_API.Models;
+using Note_Taking_App_API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<DataContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<INotesService, NotesService>();  
 
 var app = builder.Build();
 
